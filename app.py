@@ -12,7 +12,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
 from mlxtend.frequent_patterns import apriori, association_rules
-import plotly.express as px   # ⭐ ADDED FOR 3D MODEL ⭐
+from mpl_toolkits.mplot3d import Axes3D   # ⭐ FOR 3D MODEL ⭐
 
 st.set_page_config(page_title="ReFill Hub Intelligence", layout="wide")
 df=pd.read_csv("ReFillHub_SyntheticSurvey.csv")
@@ -134,6 +134,7 @@ elif page=="📊 Analysis":
         st.subheader("Model Comparison")
         st.dataframe(pd.DataFrame(metrics,columns=["Model","Precision","Recall","F1 Score","Accuracy"]))
 
+
     # Regression
     with tabs[1]:
         st.header("Willingness to Pay – Regression")
@@ -151,21 +152,18 @@ elif page=="📊 Analysis":
         st.write("RMSE:",np.sqrt(mean_squared_error(y_test,preds)))
 
         st.write("""
-        **MAE** (Mean Absolute Error) tells us how far our predictions are from the actual willingness-to-pay values on average.  
-        **RMSE** (Root Mean Squared Error) gives extra penalty to larger mistakes and shows how consistent the model is.  
-        Together, these metrics indicate whether the regression model can reliably estimate how much customers are willing to pay.
+        **MAE** tells how far predictions are from the real willingness-to-pay.  
+        **RMSE** penalizes larger errors more heavily.  
         """)
 
         residuals = y_test - preds
         fig, ax = plt.subplots(figsize=(5,3))
         sns.scatterplot(x=preds, y=residuals, alpha=0.6, ax=ax)
         ax.axhline(0, color='red', linestyle='--')
-        ax.set_title("Residual Plot (Error vs Prediction)")
-        ax.set_xlabel("Predicted Values")
-        ax.set_ylabel("Residuals")
         st.pyplot(fig)
 
-    # CLUSTERING (UPDATED WITH 3D MODEL)
+
+    # ⭐⭐⭐ UPDATED: CLUSTERING WITH 3D MODEL ⭐⭐⭐
     with tabs[2]:
         st.header("Customer Clustering")
         k=st.slider("Number of clusters",2,6,3)
@@ -177,28 +175,26 @@ elif page=="📊 Analysis":
             df['Cluster']=km.labels_
             st.dataframe(df['Cluster'].value_counts())
 
-            # ⭐⭐⭐ 3D PCA FOR INTERACTIVE CLUSTERING ⭐⭐⭐
-            pca_3d=PCA(n_components=3)
-            p3=pca_3d.fit_transform(df_num)
+            # ----- 3D PCA -----
+            pca_3=PCA(n_components=3)
+            p3=pca_3.fit_transform(df_num)
 
-            fig3d = px.scatter_3d(
-                x=p3[:,0],
-                y=p3[:,1],
-                z=p3[:,2],
-                color=df["Cluster"].astype(str),
-                title="Interactive 3D Customer Clusters",
-                width=900,
-                height=600
+            fig = plt.figure(figsize=(8,6))
+            ax = fig.add_subplot(111, projection='3d')
+
+            sc = ax.scatter(
+                p3[:,0], p3[:,1], p3[:,2],
+                c=df["Cluster"], cmap='viridis', s=40
             )
 
-            fig3d.update_traces(marker=dict(size=5))
-            fig3d.update_layout(scene=dict(
-                xaxis_title="PC1",
-                yaxis_title="PC2",
-                zaxis_title="PC3"
-            ))
+            ax.set_title("3D Interactive Customer Clusters (Rotatable)")
+            ax.set_xlabel("PC1")
+            ax.set_ylabel("PC2")
+            ax.set_zlabel("PC3")
 
-            st.plotly_chart(fig3d, use_container_width=True)
+            fig.colorbar(sc)
+            st.pyplot(fig)
+
 
     # Association Rules
     with tabs[3]:
@@ -212,14 +208,12 @@ elif page=="📊 Analysis":
         rules=rules[["antecedents","consequents","support","confidence","lift"]].sort_values("lift",ascending=False).head(10)
         st.dataframe(rules)
 
+
     # Insights
     with tabs[4]:
         st.header("Insights")
 
         st.subheader("1. Eco-aware users show higher adoption")
-        st.write(
-            "Users who regularly choose eco-friendly products demonstrate a much higher likelihood of adopting ReFill Hub."
-        )
         fig, ax = plt.subplots(figsize=(3.8,2.3))
         sns.barplot(
             x=df["Likely_to_Use_ReFillHub"], 
@@ -231,51 +225,24 @@ elif page=="📊 Analysis":
         st.pyplot(fig)
 
         st.subheader("2. Mid-income consumers show the strongest adoption")
-        st.write("Middle-income groups show the highest refill intent.")
         fig, ax = plt.subplots(figsize=(3.8,2.3))
         sns.boxplot(x=df["Income"], y=df["Likely_to_Use_ReFillHub"], palette="Set2", ax=ax)
         st.pyplot(fig)
 
-        st.subheader("3. Plastic ban awareness strongly boosts interest")
-        awareness_counts = df["Aware_Plastic_Ban"].value_counts()
-        labels = ["Not Aware", "Aware"]
-        sizes = [awareness_counts.get(0,0), awareness_counts.get(1,0)]
-        colors = ["#ff9999","#66b3ff"]
-
+        st.subheader("3. Plastic ban awareness boosts interest")
+        awareness=df["Aware_Plastic_Ban"].value_counts()
         fig, ax = plt.subplots(figsize=(3.2,3.2))
-        ax.pie(
-            sizes,
-            labels=labels,
-            colors=colors,
-            autopct="%1.1f%%",
-            startangle=90,
-            wedgeprops={'linewidth':1, 'edgecolor':'white'}
-        )
-        centre_circle = plt.Circle((0,0),0.60,fc='white')
-        fig.gca().add_artist(centre_circle)
+        ax.pie(awareness.values, labels=awareness.index, autopct="%1.1f%%")
         st.pyplot(fig)
 
-        st.subheader("4. Higher sustainability scores → Higher willingness-to-pay")
+        st.subheader("4. Sustainability score → Higher WTP")
         fig, ax = plt.subplots(figsize=(3.8,2.3))
-        sns.regplot(
-            x=df["Reduce_Waste_Score"], 
-            y=df["Willingness_to_Pay_AED"],
-            scatter_kws={"alpha":0.5},
-            line_kws={"color":"red"},
-            ax=ax
-        )
+        sns.regplot(x=df["Reduce_Waste_Score"], y=df["Willingness_to_Pay_AED"], ax=ax)
         st.pyplot(fig)
 
-        st.subheader("5. Location preferences guide ideal kiosk placement")
-        location_counts = df["Refill_Location"].value_counts()
+        st.subheader("5. Popular refill locations")
+        loc=df["Refill_Location"].value_counts()
         fig, ax = plt.subplots(figsize=(4,2.3))
-        sns.lineplot(
-            x=location_counts.index, 
-            y=location_counts.values,
-            marker="o",
-            linewidth=2,
-            color="#2ca02c",
-            ax=ax
-        )
+        sns.lineplot(x=loc.index, y=loc.values, marker="o", ax=ax)
         plt.xticks(rotation=45)
         st.pyplot(fig)
