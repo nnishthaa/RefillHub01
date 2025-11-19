@@ -12,6 +12,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
 from mlxtend.frequent_patterns import apriori, association_rules
+from mpl_toolkits.mplot3d import Axes3D  # for 3D clustering plot
 
 st.set_page_config(page_title="ReFill Hub Intelligence", layout="wide")
 df=pd.read_csv("ReFillHub_SyntheticSurvey.csv")
@@ -177,11 +178,27 @@ elif page=="📊 Analysis":
             df['Cluster']=km.labels_
             st.dataframe(df['Cluster'].value_counts())
 
+            # 2D PCA scatter (existing)
             p=PCA(n_components=2).fit_transform(df_num)
             fig,ax=plt.subplots()
             sc=ax.scatter(p[:,0],p[:,1],c=df['Cluster'],cmap='viridis')
             plt.colorbar(sc)
+            ax.set_xlabel("PC1")
+            ax.set_ylabel("PC2")
+            ax.set_title("2D PCA Cluster Visualization")
             st.pyplot(fig)
+
+            # ✅ NEW: 3D PCA cluster visualization
+            p3 = PCA(n_components=3).fit_transform(df_num)
+            fig3 = plt.figure()
+            ax3 = fig3.add_subplot(111, projection='3d')
+            sc3 = ax3.scatter(p3[:,0], p3[:,1], p3[:,2], c=df['Cluster'], cmap='viridis')
+            ax3.set_xlabel("PC1")
+            ax3.set_ylabel("PC2")
+            ax3.set_zlabel("PC3")
+            ax3.set_title("3D PCA Cluster Visualization")
+            fig3.colorbar(sc3, ax=ax3, shrink=0.6)
+            st.pyplot(fig3)
 
     # Association Rules
     with tabs[3]:
