@@ -12,6 +12,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
 from mlxtend.frequent_patterns import apriori, association_rules
+import io  # <-- REQUIRED FOR DOWNLOAD BUTTONS
 
 st.set_page_config(page_title="ReFill Hub Intelligence", layout="wide")
 df=pd.read_csv("ReFillHub_SyntheticSurvey.csv")
@@ -116,22 +117,46 @@ elif page=="📊 Analysis":
             preds=m.predict(X_test)
             probs=m.predict_proba(X_test)[:,1]
 
+            # Confusion Matrix
             fig,ax=plt.subplots(figsize=(4,3))
             sns.heatmap(confusion_matrix(y_test,preds),annot=True,fmt="d",cmap="Greens",ax=ax)
             ax.set_title(f"{name} – Confusion Matrix")
-            cols[idx%2].pyplot(fig); idx+=1
+            cols[idx%2].pyplot(fig)
 
+            # DOWNLOAD BUTTON
+            buf = io.BytesIO()
+            fig.savefig(buf, format="png")
+            cols[idx%2].download_button("📥 Download PNG", data=buf.getvalue(),
+                                        file_name="chart.png", mime="image/png")
+
+            idx+=1
+
+            # ROC Curve
             fig,ax=plt.subplots(figsize=(4,3))
             fpr,tpr,_=roc_curve(y_test,probs)
             ax.plot(fpr,tpr)
             ax.set_title(f"{name} – ROC Curve")
-            cols[idx%2].pyplot(fig); idx+=1
+            cols[idx%2].pyplot(fig)
+
+            buf = io.BytesIO()
+            fig.savefig(buf, format="png")
+            cols[idx%2].download_button("📥 Download PNG", data=buf.getvalue(),
+                                        file_name="chart.png", mime="image/png")
+
+            idx+=1
 
             rep=classification_report(y_test,preds,output_dict=True)
-            metrics.append([name,rep['weighted avg']['precision'],rep['weighted avg']['recall'],rep['weighted avg']['f1-score'],accuracy_score(y_test,preds)])
+            metrics.append([
+                name,
+                rep['weighted avg']['precision'],
+                rep['weighted avg']['recall'],
+                rep['weighted avg']['f1-score'],
+                accuracy_score(y_test,preds)
+            ])
 
         st.subheader("Model Comparison")
         st.dataframe(pd.DataFrame(metrics,columns=["Model","Precision","Recall","F1 Score","Accuracy"]))
+
 
     # Regression
     with tabs[1]:
@@ -146,18 +171,15 @@ elif page=="📊 Analysis":
         reg=LinearRegression().fit(X_train,y_train)
         preds=reg.predict(X_test)
         
-        # Original metrics
         st.write("MAE:",mean_absolute_error(y_test,preds))
         st.write("RMSE:",np.sqrt(mean_squared_error(y_test,preds)))
 
-        # Explanation
         st.write("""
         **MAE** (Mean Absolute Error) tells us how far our predictions are from the actual willingness-to-pay values on average.  
         **RMSE** (Root Mean Squared Error) gives extra penalty to larger mistakes and shows how consistent the model is.  
-        Together, these metrics indicate whether the regression model can reliably estimate how much customers are willing to pay.
         """)
 
-        # Residual plot
+        # Residual Plot
         residuals = y_test - preds
         fig, ax = plt.subplots(figsize=(5,3))
         sns.scatterplot(x=preds, y=residuals, alpha=0.6, ax=ax)
@@ -166,6 +188,12 @@ elif page=="📊 Analysis":
         ax.set_xlabel("Predicted Values")
         ax.set_ylabel("Residuals")
         st.pyplot(fig)
+
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png")
+        st.download_button("📥 Download PNG", data=buf.getvalue(),
+                           file_name="chart.png", mime="image/png")
+
 
     # Clustering
     with tabs[2]:
@@ -183,6 +211,12 @@ elif page=="📊 Analysis":
             plt.colorbar(sc)
             st.pyplot(fig)
 
+            buf = io.BytesIO()
+            fig.savefig(buf, format="png")
+            st.download_button("📥 Download PNG", data=buf.getvalue(),
+                               file_name="chart.png", mime="image/png")
+
+
     # Association Rules
     with tabs[3]:
         st.header("Association Rules")
@@ -192,18 +226,17 @@ elif page=="📊 Analysis":
         df_hot=pd.get_dummies(df_ar[cat]).fillna(0)
         freq=apriori(df_hot,min_support=0.05,use_colnames=True)
         rules=association_rules(freq,metric="lift",min_threshold=1)
-        rules=rules[["antecedents","consequents","support","confidence","lift"]].sort_values("lift",ascending=False).head(10)
         st.dataframe(rules)
 
-    # ⭐⭐⭐ UPDATED INSIGHTS SECTION ONLY ⭐⭐⭐
+
+    # INSIGHTS (ALL CHARTS WITH DOWNLOAD BUTTONS)
     with tabs[4]:
         st.header("Insights")
 
-        # 1 — Horizontal colorful bar chart
+        # 1 Horizontal Bar
         st.subheader("1. Eco-aware users show higher adoption")
         st.write(
-            "Users who regularly choose eco-friendly products demonstrate a much higher likelihood of adopting ReFill Hub. "
-            "Their sustainability mindset directly influences refill behavior, making them an ideal early-adopter segment."
+            "Users who regularly choose eco-friendly products demonstrate a much higher likelihood of adopting ReFill Hub."
         )
         fig, ax = plt.subplots(figsize=(3.8,2.3))
         sns.barplot(
@@ -214,52 +247,59 @@ elif page=="📊 Analysis":
             ax=ax
         )
         ax.set_title("Eco Users vs Adoption Likelihood")
-        ax.set_xlabel("Avg Likelihood")
-        ax.set_ylabel("Eco Product Usage (0=No, 1=Yes)")
         st.pyplot(fig)
 
-        # 2 — Box plot
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png")
+        st.download_button("📥 Download PNG", data=buf.getvalue(),
+                           file_name="chart.png", mime="image/png")
+
+
+        # 2 Box Plot
         st.subheader("2. Mid-income consumers show the strongest adoption")
         st.write(
-            "Middle-income consumers balance affordability with awareness, and they emerge as the most responsive segment. "
-            "They show higher refill likelihood compared to lower or higher-income groups."
+            "Middle-income consumers balance affordability with awareness, and they emerge as the most responsive segment."
         )
         fig, ax = plt.subplots(figsize=(3.8,2.3))
         sns.boxplot(x=df["Income"], y=df["Likely_to_Use_ReFillHub"], palette="Set2", ax=ax)
         ax.set_title("Income Group vs Likelihood")
         st.pyplot(fig)
 
-        # 3 — Donut chart
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png")
+        st.download_button("📥 Download PNG", data=buf.getvalue(),
+                           file_name="chart.png", mime="image/png")
+
+
+        # 3 Donut Chart
         st.subheader("3. Plastic ban awareness strongly boosts interest")
-        st.write(
-            "Respondents aware of the UAE’s plastic ban are significantly more inclined to try ReFill Hub. "
-            "Government regulations act as a powerful motivator for eco-friendly alternatives."
-        )
+        st.write("Respondents aware of the plastic ban are far more likely to adopt refill habits.")
+
         awareness_counts = df["Aware_Plastic_Ban"].value_counts()
         labels = ["Not Aware", "Aware"]
-        sizes = [awareness_counts.get(0, 0), awareness_counts.get(1, 0)]
+        sizes = [awareness_counts.get(0,0), awareness_counts.get(1,0)]
         colors = ["#ff9999","#66b3ff"]
 
         fig, ax = plt.subplots(figsize=(3.2,3.2))
         ax.pie(
-            sizes,
-            labels=labels,
-            colors=colors,
-            autopct="%1.1f%%",
-            startangle=90,
-            wedgeprops={'linewidth':1, 'edgecolor':'white'}
+            sizes, labels=labels, colors=colors, autopct="%1.1f%%",
+            startangle=90, wedgeprops={'linewidth':1, 'edgecolor':'white'}
         )
         centre_circle = plt.Circle((0,0),0.60,fc='white')
         fig.gca().add_artist(centre_circle)
         ax.set_title("Awareness of Plastic Ban")
         st.pyplot(fig)
 
-        # 4 — Scatter + trendline
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png")
+        st.download_button("📥 Download PNG", data=buf.getvalue(),
+                           file_name="chart.png", mime="image/png")
+
+
+        # 4 Scatter + Trendline
         st.subheader("4. Higher sustainability scores → Higher willingness-to-pay")
-        st.write(
-            "Users with high reduce-waste scores are willing to pay more for sustainable refill solutions. "
-            "Environmental values strongly influence willingness to pay for eco-friendly products."
-        )
+        st.write("Users with stronger eco-values pay more for sustainable options.")
+
         fig, ax = plt.subplots(figsize=(3.8,2.3))
         sns.regplot(
             x=df["Reduce_Waste_Score"], 
@@ -271,12 +311,16 @@ elif page=="📊 Analysis":
         ax.set_title("Sustainability Score vs WTP")
         st.pyplot(fig)
 
-        # 5 — Line chart
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png")
+        st.download_button("📥 Download PNG", data=buf.getvalue(),
+                           file_name="chart.png", mime="image/png")
+
+
+        # 5 Line Chart
         st.subheader("5. Location preferences guide ideal kiosk placement")
-        st.write(
-            "Survey data highlights high demand for refill kiosks in malls, residential areas, and metro stations. "
-            "Understanding these preferred zones helps optimize deployment and ensure maximum user convenience."
-        )
+        st.write("Malls and residential zones show strongest demand.")
+
         location_counts = df["Refill_Location"].value_counts()
 
         fig, ax = plt.subplots(figsize=(4,2.3))
@@ -289,6 +333,10 @@ elif page=="📊 Analysis":
             ax=ax
         )
         ax.set_title("Preferred Refill Locations")
-        ax.set_ylabel("Count")
         plt.xticks(rotation=45)
         st.pyplot(fig)
+
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png")
+        st.download_button("📥 Download PNG", data=buf.getvalue(),
+                           file_name="chart.png", mime="image/png")
