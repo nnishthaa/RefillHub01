@@ -31,35 +31,167 @@ with st.sidebar:
     st.write("🧠 Anjan – Strategy & AI")
 
 
-# Dashboard Overview
-if page=="🏠 Dashboard Overview":
-    st.markdown("<h1 style='background:linear-gradient(90deg,#6a11cb,#2575fc); padding:20px; border-radius:12px; color:white;'>♻️ ReFill Hub – Eco Intelligence Dashboard</h1>", unsafe_allow_html=True)
-    st.write("Smart analytics engine for refill adoption.")
+# --------------------------------------------------------------------------
+# ⭐⭐⭐⭐⭐ UPDATED DASHBOARD OVERVIEW PAGE (ONLY THIS SECTION CHANGED) ⭐⭐⭐⭐⭐
+# --------------------------------------------------------------------------
 
-    # GREEN BOX
+if page=="🏠 Dashboard Overview":
+
+    # HERO HEADER
     st.markdown("""
-        <div style="background-color:#d8f5d0; padding:20px; border-radius:12px; margin-top:20px;">
-            <h3 style="color:black;">💡 ReFill Hub: Business Overview</h3>
-            <p style="color:black; font-size:16px;">
-                The ReFill Hub is a sustainability-focused retail solution deploying automated smart refill kiosks across the UAE 
-                for daily essentials such as shampoos, detergents, and cooking oils.<br><br>
-                The core mission is to minimize single-use plastic waste by encouraging refillable consumption supported by digital 
-                payments and a frictionless user experience.<br><br>
-                The business targets young professionals and eco-conscious urban residents.<br>
-                Survey insights confirm middle-income groups and sustainability-aware respondents as early adopters.<br><br>
-                Future vision includes expanding into non-liquid categories and scaling across the GCC.
+        <div style="
+            background: linear-gradient(90deg, #0fbc49, #067d3b);
+            padding: 32px;
+            border-radius: 14px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            
+            <h1 style="margin-bottom: 6px;">♻️ ReFill Hub – Eco Intelligence Dashboard</h1>
+            <p style="font-size:18px; margin-top:0;">
+                Turning sustainability insights into smarter refill adoption decisions.
             </p>
         </div>
     """, unsafe_allow_html=True)
 
+    st.write("")
+    st.write("")
+
+    # BEAUTIFUL HIGHLIGHT CARDS
+    c1, c2, c3 = st.columns(3)
+
+    c1.markdown("""
+        <div style="
+            background-color:#e8f9e6;
+            padding:20px;
+            border-radius:14px;
+            text-align:center;
+            border-left:6px solid #28a745;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <h3 style="margin:0;">🌍 Sustainability First</h3>
+            <p style="font-size:14px; margin-top:8px;">
+                Driving UAE’s transition toward low-plastic lifestyles.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    c2.markdown("""
+        <div style="
+            background-color:#fff4d9;
+            padding:20px;
+            border-radius:14px;
+            text-align:center;
+            border-left:6px solid #ff9f1c;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <h3 style="margin:0;">🤖 Data-Driven Analytics</h3>
+            <p style="font-size:14px; margin-top:8px;">
+                Real insights from clusters, prediction models & behaviour data.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    c3.markdown("""
+        <div style="
+            background-color:#e3f0ff;
+            padding:20px;
+            border-radius:14px;
+            text-align:center;
+            border-left:6px solid #3b82f6;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <h3 style="margin:0;">🏙 Urban Refill Revolution</h3>
+            <p style="font-size:14px; margin-top:8px;">
+                Targeting busy, eco-aware consumers across UAE.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.write("")
+    st.write("")
+
+    # BUSINESS OVERVIEW GREEN BOX (Enhanced Styling)
+    st.markdown("""
+        <div style="
+            background-color:#d8f5d0; 
+            padding:25px; 
+            border-radius:14px; 
+            margin-top:10px;
+            box-shadow:0 3px 12px rgba(0,0,0,0.12);">
+            <h3 style="color:black;">💡 ReFill Hub: Business Overview</h3>
+            <p style="color:black; font-size:16px;">
+                ReFill Hub deploys automated smart refill kiosks across the UAE offering shampoos, detergents,
+                oils and other daily essentials. The model encourages customers to bring or buy 
+                reusable containers and refill products at lower cost.<br><br>
+
+                The concept significantly reduces single-use plastic consumption with a seamless,
+                digital-first customer experience.<br><br>
+
+                Early adopters include young professionals, sustainability-aware residents and mid-income families.
+                With a strong push from UAE’s plastic-ban policies, adoption potential is rising rapidly.<br><br>
+
+                Future direction includes kiosks for non-liquid products, IoT container tracking and expansion across GCC.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.write("")
+    st.write("")
+
+    # QUICK METRIC CARDS
     c1,c2,c3,c4=st.columns(4)
-    c1.metric("Total Responses", df.shape[0])
-    c2.metric("Features", df.shape[1])
-    c3.metric("High Eco-Intent", "31.4%")
-    c4.metric("Warm Adopters", "48.7%")
+
+    c1.markdown(f"""
+        <div style="
+            background:white; 
+            padding:18px; 
+            border-radius:14px; 
+            text-align:center;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <h3>📋 {df.shape[0]}</h3>
+            <p style="font-size:14px;">Total Responses</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    c2.markdown(f"""
+        <div style="
+            background:white; 
+            padding:18px; 
+            border-radius:14px; 
+            text-align:center;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <h3>🧩 {df.shape[1]}</h3>
+            <p style="font-size:14px;">Features Captured</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    c3.markdown("""
+        <div style="
+            background:white; 
+            padding:18px; 
+            border-radius:14px; 
+            text-align:center;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <h3>🌿 31.4%</h3>
+            <p style="font-size:14px;">High Eco-Intent Users</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    c4.markdown("""
+        <div style="
+            background:white; 
+            padding:18px; 
+            border-radius:14px; 
+            text-align:center;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <h3>🔥 48.7%</h3>
+            <p style="font-size:14px;">Warm Refill Adopters</p>
+        </div>
+    """, unsafe_allow_html=True)
 
 
-# About Page
+# --------------------------------------------------------------------------
+# ⭐ REST OF THE CODE IS UNTOUCHED / IDENTICAL ⭐
+# --------------------------------------------------------------------------
+
 elif page=="🧩 About ReFill Hub":
     st.title("About ReFill Hub")
     c1,c2=st.columns([1.2,1])
@@ -97,7 +229,7 @@ elif page=="📊 Analysis":
     with tabs[0]:
         st.header("Classification Models")
 
-        # ⭐⭐⭐ ADDED PERSONA SECTION ⭐⭐⭐
+        # Persona Section
         st.subheader("💁‍♀️ Customer Persona (Based on Prediction Patterns)")
         st.markdown("""
         **Persona: Eco-Driven Urban Millennial**
@@ -179,7 +311,7 @@ elif page=="📊 Analysis":
         st.pyplot(fig)
 
 
-    # ⭐⭐⭐ UPDATED: TRUE ROTATABLE 3D CLUSTERING MODEL ⭐⭐⭐
+    # ⭐⭐⭐ 3D Clustering ⭐⭐⭐
     with tabs[2]:
         st.header("Customer Clustering")
         k=st.slider("Number of clusters",2,6,3)
@@ -191,7 +323,6 @@ elif page=="📊 Analysis":
             df['Cluster']=km.labels_
             st.dataframe(df['Cluster'].value_counts())
 
-            # ----- Plotly 3D PCA -----
             pca_3=PCA(n_components=3)
             p3=pca_3.fit_transform(df_num)
 
