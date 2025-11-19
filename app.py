@@ -15,13 +15,13 @@ from mlxtend.frequent_patterns import apriori, association_rules
 import plotly.express as px  # ⭐ FOR FULLY ROTATABLE 3D MODEL ⭐
 
 st.set_page_config(page_title="ReFill Hub Intelligence", layout="wide")
-df=pd.read_csv("ReFillHub_SyntheticSurvey.csv")
+df = pd.read_csv("ReFillHub_SyntheticSurvey.csv")
 
 # Sidebar
 with st.sidebar:
     st.image("refillhub_logo.png", use_column_width=True)
     st.markdown("## 🌱 What do you want to see?")
-    page=st.radio("",["🏠 Dashboard Overview","🧩 About ReFill Hub","📊 Analysis"])
+    page = st.radio("", ["🏠 Dashboard Overview", "🧩 About ReFill Hub", "📊 Analysis"])
     st.markdown("---")
     st.markdown("### 👥 Team Members")
     st.write("👑 Nishtha – Insights Lead")
@@ -32,10 +32,10 @@ with st.sidebar:
 
 
 # --------------------------------------------------------------------------
-# ⭐⭐⭐⭐⭐ UPDATED DASHBOARD OVERVIEW PAGE (ONLY THIS SECTION CHANGED) ⭐⭐⭐⭐⭐
+# ⭐⭐⭐⭐⭐ UPDATED DASHBOARD OVERVIEW PAGE WITH BLACK TEXT ⭐⭐⭐⭐⭐
 # --------------------------------------------------------------------------
 
-if page=="🏠 Dashboard Overview":
+if page == "🏠 Dashboard Overview":
 
     # HERO HEADER
     st.markdown("""
@@ -57,7 +57,7 @@ if page=="🏠 Dashboard Overview":
     st.write("")
     st.write("")
 
-    # BEAUTIFUL HIGHLIGHT CARDS
+    # BEAUTIFUL HIGHLIGHT CARDS WITH BLACK TEXT
     c1, c2, c3 = st.columns(3)
 
     c1.markdown("""
@@ -68,8 +68,8 @@ if page=="🏠 Dashboard Overview":
             text-align:center;
             border-left:6px solid #28a745;
             box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-            <h3 style="margin:0;">🌍 Sustainability First</h3>
-            <p style="font-size:14px; margin-top:8px;">
+            <h3 style="margin:0; color:black;">🌍 Sustainability First</h3>
+            <p style="font-size:14px; margin-top:8px; color:black;">
                 Driving UAE’s transition toward low-plastic lifestyles.
             </p>
         </div>
@@ -83,8 +83,8 @@ if page=="🏠 Dashboard Overview":
             text-align:center;
             border-left:6px solid #ff9f1c;
             box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-            <h3 style="margin:0;">🤖 Data-Driven Analytics</h3>
-            <p style="font-size:14px; margin-top:8px;">
+            <h3 style="margin:0; color:black;">🤖 Data-Driven Analytics</h3>
+            <p style="font-size:14px; margin-top:8px; color:black;">
                 Real insights from clusters, prediction models & behaviour data.
             </p>
         </div>
@@ -98,8 +98,8 @@ if page=="🏠 Dashboard Overview":
             text-align:center;
             border-left:6px solid #3b82f6;
             box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-            <h3 style="margin:0;">🏙 Urban Refill Revolution</h3>
-            <p style="font-size:14px; margin-top:8px;">
+            <h3 style="margin:0; color:black;">🏙 Urban Refill Revolution</h3>
+            <p style="font-size:14px; margin-top:8px; color:black;">
                 Targeting busy, eco-aware consumers across UAE.
             </p>
         </div>
@@ -108,7 +108,7 @@ if page=="🏠 Dashboard Overview":
     st.write("")
     st.write("")
 
-    # BUSINESS OVERVIEW GREEN BOX (Enhanced Styling)
+    # GREEN BOX TEXT (already black but fixed formatting)
     st.markdown("""
         <div style="
             background-color:#d8f5d0; 
@@ -136,8 +136,8 @@ if page=="🏠 Dashboard Overview":
     st.write("")
     st.write("")
 
-    # QUICK METRIC CARDS
-    c1,c2,c3,c4=st.columns(4)
+    # QUICK METRIC CARDS (BLACK TEXT)
+    c1, c2, c3, c4 = st.columns(4)
 
     c1.markdown(f"""
         <div style="
@@ -145,9 +145,9 @@ if page=="🏠 Dashboard Overview":
             padding:18px; 
             border-radius:14px; 
             text-align:center;
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-            <h3>📋 {df.shape[0]}</h3>
-            <p style="font-size:14px;">Total Responses</p>
+            box-shadow:0 2px 8px rgba(0,0,0,0.1); color:black;">
+            <h3 style="color:black;">📋 {df.shape[0]}</h3>
+            <p style="font-size:14px; color:black;">Total Responses</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -157,9 +157,9 @@ if page=="🏠 Dashboard Overview":
             padding:18px; 
             border-radius:14px; 
             text-align:center;
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-            <h3>🧩 {df.shape[1]}</h3>
-            <p style="font-size:14px;">Features Captured</p>
+            box-shadow:0 2px 8px rgba(0,0,0,0.1); color:black;">
+            <h3 style="color:black;">🧩 {df.shape[1]}</h3>
+            <p style="font-size:14px; color:black;">Features Captured</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -169,9 +169,9 @@ if page=="🏠 Dashboard Overview":
             padding:18px; 
             border-radius:14px; 
             text-align:center;
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-            <h3>🌿 31.4%</h3>
-            <p style="font-size:14px;">High Eco-Intent Users</p>
+            box-shadow:0 2px 8px rgba(0,0,0,0.1); color:black;">
+            <h3 style="color:black;">🌿 31.4%</h3>
+            <p style="font-size:14px; color:black;">High Eco-Intent Users</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -181,9 +181,9 @@ if page=="🏠 Dashboard Overview":
             padding:18px; 
             border-radius:14px; 
             text-align:center;
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-            <h3>🔥 48.7%</h3>
-            <p style="font-size:14px;">Warm Refill Adopters</p>
+            box-shadow:0 2px 8px rgba(0,0,0,0.1); color:black;">
+            <h3 style="color:black;">🔥 48.7%</h3>
+            <p style="font-size:14px; color:black;">Warm Refill Adopters</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -192,9 +192,9 @@ if page=="🏠 Dashboard Overview":
 # ⭐ REST OF THE CODE IS UNTOUCHED / IDENTICAL ⭐
 # --------------------------------------------------------------------------
 
-elif page=="🧩 About ReFill Hub":
+elif page == "🧩 About ReFill Hub":
     st.title("About ReFill Hub")
-    c1,c2=st.columns([1.2,1])
+    c1, c2 = st.columns([1.2, 1])
     with c1:
         st.markdown("### 💡 Business Overview")
         st.write("ReFill Hub eliminates single-use plastics using smart automated refill kiosks across UAE.")
@@ -221,15 +221,14 @@ elif page=="🧩 About ReFill Hub":
         st.write("UAE rollout → GCC expansion → ReFill OS")
 
 
-# Analysis
-elif page=="📊 Analysis":
-    tabs=st.tabs(["Classification","Regression","Clustering","Association Rules","Insights"])
+# ANALYSIS
+elif page == "📊 Analysis":
+    tabs = st.tabs(["Classification", "Regression", "Clustering", "Association Rules", "Insights"])
 
     # Classification
     with tabs[0]:
         st.header("Classification Models")
 
-        # Persona Section
         st.subheader("💁‍♀️ Customer Persona (Based on Prediction Patterns)")
         st.markdown("""
         **Persona: Eco-Driven Urban Millennial**
@@ -244,60 +243,65 @@ elif page=="📊 Analysis":
         - Likely to Use ReFill Hub: **High**, based on model predictions  
         """)
 
-        df_c=df.copy()
-        le=LabelEncoder()
+        df_c = df.copy()
+        le = LabelEncoder()
         for col in df_c.select_dtypes(include=['object']).columns:
-            df_c[col]=le.fit_transform(df_c[col])
-        target="Likely_to_Use_ReFillHub"
-        X=df_c.drop(columns=[target])
-        y=df_c[target]
-        X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42)
+            df_c[col] = le.fit_transform(df_c[col])
+        target = "Likely_to_Use_ReFillHub"
+        X = df_c.drop(columns=[target])
+        y = df_c[target]
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        models={"Random Forest":RandomForestClassifier(),
-                "Decision Tree":DecisionTreeClassifier(),
-                "Gradient Boosting":GradientBoostingClassifier()}
+        models = {"Random Forest": RandomForestClassifier(),
+                  "Decision Tree": DecisionTreeClassifier(),
+                  "Gradient Boosting": GradientBoostingClassifier()}
 
-        metrics=[]
-        cols=st.columns(2)
-        idx=0
-        for name,m in models.items():
-            m.fit(X_train,y_train)
-            preds=m.predict(X_test)
-            probs=m.predict_proba(X_test)[:,1]
+        metrics = []
+        cols = st.columns(2)
+        idx = 0
+        for name, m in models.items():
+            m.fit(X_train, y_train)
+            preds = m.predict(X_test)
+            probs = m.predict_proba(X_test)[:, 1]
 
-            fig,ax=plt.subplots(figsize=(4,3))
-            sns.heatmap(confusion_matrix(y_test,preds),annot=True,fmt="d",cmap="Greens",ax=ax)
+            fig, ax = plt.subplots(figsize=(4, 3))
+            sns.heatmap(confusion_matrix(y_test, preds), annot=True, fmt="d", cmap="Greens", ax=ax)
             ax.set_title(f"{name} – Confusion Matrix")
-            cols[idx%2].pyplot(fig); idx+=1
+            cols[idx % 2].pyplot(fig)
+            idx += 1
 
-            fig,ax=plt.subplots(figsize=(4,3))
-            fpr,tpr,_=roc_curve(y_test,probs)
-            ax.plot(fpr,tpr)
+            fig, ax = plt.subplots(figsize=(4, 3))
+            fpr, tpr, _ = roc_curve(y_test, probs)
+            ax.plot(fpr, tpr)
             ax.set_title(f"{name} – ROC Curve")
-            cols[idx%2].pyplot(fig); idx+=1
+            cols[idx % 2].pyplot(fig)
+            idx += 1
 
-            rep=classification_report(y_test,preds,output_dict=True)
-            metrics.append([name,rep['weighted avg']['precision'],rep['weighted avg']['recall'],rep['weighted avg']['f1-score'],accuracy_score(y_test,preds)])
+            rep = classification_report(y_test, preds, output_dict=True)
+            metrics.append([name, rep['weighted avg']['precision'],
+                            rep['weighted avg']['recall'],
+                            rep['weighted avg']['f1-score'],
+                            accuracy_score(y_test, preds)])
 
         st.subheader("Model Comparison")
-        st.dataframe(pd.DataFrame(metrics,columns=["Model","Precision","Recall","F1 Score","Accuracy"]))
+        st.dataframe(pd.DataFrame(metrics, columns=["Model", "Precision", "Recall", "F1 Score", "Accuracy"]))
 
 
     # Regression
     with tabs[1]:
         st.header("Willingness to Pay – Regression")
-        df_r=df.dropna(subset=["Willingness_to_Pay_AED"])
-        df_r2=df_r.copy()
+        df_r = df.dropna(subset=["Willingness_to_Pay_AED"])
+        df_r2 = df_r.copy()
         for col in df_r2.select_dtypes(include=['object']).columns:
-            df_r2[col]=le.fit_transform(df_r2[col])
-        X=df_r2.drop(columns=["Willingness_to_Pay_AED"])
-        y=df_r2["Willingness_to_Pay_AED"]
-        X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42)
-        reg=LinearRegression().fit(X_train,y_train)
-        preds=reg.predict(X_test)
-        
-        st.write("MAE:",mean_absolute_error(y_test,preds))
-        st.write("RMSE:",np.sqrt(mean_squared_error(y_test,preds)))
+            df_r2[col] = le.fit_transform(df_r2[col])
+        X = df_r2.drop(columns=["Willingness_to_Pay_AED"])
+        y = df_r2["Willingness_to_Pay_AED"]
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        reg = LinearRegression().fit(X_train, y_train)
+        preds = reg.predict(X_test)
+
+        st.write("MAE:", mean_absolute_error(y_test, preds))
+        st.write("RMSE:", np.sqrt(mean_squared_error(y_test, preds)))
 
         st.write("""
         **MAE** tells how far predictions are from the real willingness-to-pay.  
@@ -305,7 +309,7 @@ elif page=="📊 Analysis":
         """)
 
         residuals = y_test - preds
-        fig, ax = plt.subplots(figsize=(5,3))
+        fig, ax = plt.subplots(figsize=(5, 3))
         sns.scatterplot(x=preds, y=residuals, alpha=0.6, ax=ax)
         ax.axhline(0, color='red', linestyle='--')
         st.pyplot(fig)
@@ -314,20 +318,20 @@ elif page=="📊 Analysis":
     # ⭐⭐⭐ 3D Clustering ⭐⭐⭐
     with tabs[2]:
         st.header("Customer Clustering")
-        k=st.slider("Number of clusters",2,6,3)
+        k = st.slider("Number of clusters", 2, 6, 3)
 
         if st.button("Run Clustering"):
-            df_num=df.select_dtypes(include=['int64','float64'])
+            df_num = df.select_dtypes(include=['int64', 'float64'])
 
-            km=KMeans(n_clusters=k,random_state=42).fit(df_num)
-            df['Cluster']=km.labels_
+            km = KMeans(n_clusters=k, random_state=42).fit(df_num)
+            df['Cluster'] = km.labels_
             st.dataframe(df['Cluster'].value_counts())
 
-            pca_3=PCA(n_components=3)
-            p3=pca_3.fit_transform(df_num)
+            pca_3 = PCA(n_components=3)
+            p3 = pca_3.fit_transform(df_num)
 
             fig3d = px.scatter_3d(
-                x=p3[:,0], y=p3[:,1], z=p3[:,2],
+                x=p3[:, 0], y=p3[:, 1], z=p3[:, 2],
                 color=df["Cluster"].astype(str),
                 title="3D Interactive Customer Clusters",
                 opacity=0.8
@@ -340,13 +344,14 @@ elif page=="📊 Analysis":
     # Association Rules
     with tabs[3]:
         st.header("Association Rules")
-        df_ar=df.copy()
-        cat=df_ar.select_dtypes(include=['object']).columns
-        for col in cat: df_ar[col]=df_ar[col].astype(str)
-        df_hot=pd.get_dummies(df_ar[cat]).fillna(0)
-        freq=apriori(df_hot,min_support=0.05,use_colnames=True)
-        rules=association_rules(freq,metric="lift",min_threshold=1)
-        rules=rules[["antecedents","consequents","support","confidence","lift"]].sort_values("lift",ascending=False).head(10)
+        df_ar = df.copy()
+        cat = df_ar.select_dtypes(include=['object']).columns
+        for col in cat:
+            df_ar[col] = df_ar[col].astype(str)
+        df_hot = pd.get_dummies(df_ar[cat]).fillna(0)
+        freq = apriori(df_hot, min_support=0.05, use_colnames=True)
+        rules = association_rules(freq, metric="lift", min_threshold=1)
+        rules = rules[["antecedents", "consequents", "support", "confidence", "lift"]].sort_values("lift", ascending=False).head(10)
         st.dataframe(rules)
 
 
@@ -355,9 +360,9 @@ elif page=="📊 Analysis":
         st.header("Insights")
 
         st.subheader("1. Eco-aware users show higher adoption")
-        fig, ax = plt.subplots(figsize=(3.8,2.3))
+        fig, ax = plt.subplots(figsize=(3.8, 2.3))
         sns.barplot(
-            x=df["Likely_to_Use_ReFillHub"], 
+            x=df["Likely_to_Use_ReFillHub"],
             y=df["Uses_Eco_Products"],
             palette="viridis",
             estimator=np.mean,
@@ -366,24 +371,24 @@ elif page=="📊 Analysis":
         st.pyplot(fig)
 
         st.subheader("2. Mid-income consumers show the strongest adoption")
-        fig, ax = plt.subplots(figsize=(3.8,2.3))
+        fig, ax = plt.subplots(figsize=(3.8, 2.3))
         sns.boxplot(x=df["Income"], y=df["Likely_to_Use_ReFillHub"], palette="Set2", ax=ax)
         st.pyplot(fig)
 
         st.subheader("3. Plastic ban awareness boosts interest")
-        awareness=df["Aware_Plastic_Ban"].value_counts()
-        fig, ax = plt.subplots(figsize=(3.2,3.2))
+        awareness = df["Aware_Plastic_Ban"].value_counts()
+        fig, ax = plt.subplots(figsize=(3.2, 3.2))
         ax.pie(awareness.values, labels=awareness.index, autopct="%1.1f%%")
         st.pyplot(fig)
 
         st.subheader("4. Sustainability score → Higher WTP")
-        fig, ax = plt.subplots(figsize=(3.8,2.3))
+        fig, ax = plt.subplots(figsize=(3.8, 2.3))
         sns.regplot(x=df["Reduce_Waste_Score"], y=df["Willingness_to_Pay_AED"], ax=ax)
         st.pyplot(fig)
 
         st.subheader("5. Popular refill locations")
-        loc=df["Refill_Location"].value_counts()
-        fig, ax = plt.subplots(figsize=(4,2.3))
+        loc = df["Refill_Location"].value_counts()
+        fig, ax = plt.subplots(figsize=(4, 2.3))
         sns.lineplot(x=loc.index, y=loc.values, marker="o", ax=ax)
         plt.xticks(rotation=45)
         st.pyplot(fig)
