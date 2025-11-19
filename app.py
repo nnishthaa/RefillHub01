@@ -36,7 +36,7 @@ with st.sidebar:
 
 if page == "🏠 Dashboard Overview":
 
-    # HERO HEADER (fixed HTML showing issue)
+    # HERO HEADER
     st.markdown("""
     <div style="
         background: linear-gradient(90deg, #0fbc49, #067d3b);
@@ -56,7 +56,7 @@ if page == "🏠 Dashboard Overview":
     st.write("")
     st.write("")
 
-    # HIGHLIGHT CARDS (text now clean, no code)
+    # HIGHLIGHT CARDS
     c1, c2, c3 = st.columns(3)
 
     c1.markdown("""
@@ -110,7 +110,7 @@ if page == "🏠 Dashboard Overview":
     st.write("")
     st.write("")
 
-    # GREEN BOX (fixed text, no HTML showing)
+    # ⭐ CLEAN GREEN BOX (FIXED — NO HTML OR CODEBLOCK TEXT)
     st.markdown("""
     <div style="
         background-color:#d8f5d0;
@@ -119,26 +119,26 @@ if page == "🏠 Dashboard Overview":
         margin-top:10px;
         box-shadow:0 3px 12px rgba(0,0,0,0.12);
     ">
-        <h3 style="color:black;">💡 ReFill Hub: Business Overview</h3>
-        <p style="color:black; font-size:16px;">
-
-        The concept significantly reduces single-use plastic consumption with a seamless,
-        digital-first customer experience.<br><br>
-
-        Early adopters include young professionals, sustainability-aware residents and mid-income families.
-        With a strong push from UAE’s plastic-ban policies, adoption potential is rising rapidly.<br><br>
-
-        Future direction includes kiosks for non-liquid products, IoT-enabled container tracking,
-        smart loyalty programs and expansion across GCC.
-
-        </p>
+        <h3 style="color:black; margin-bottom:12px;">💡 ReFill Hub: Business Overview</h3>
     </div>
     """, unsafe_allow_html=True)
 
+    st.markdown("""
+**The concept significantly reduces single-use plastic consumption with a seamless,  
+digital-first customer experience.**
+
+Early adopters include young professionals, sustainability-aware residents  
+and mid-income families. With strong support from UAE’s plastic-ban policies,  
+adoption potential is rising rapidly.
+
+Future direction includes kiosks for non-liquid products, IoT-enabled container tracking,  
+smart loyalty programs and expansion across GCC.
+""")
+
     st.write("")
     st.write("")
 
-    # METRIC CARDS (text fixed, black color)
+    # METRIC CARDS
     c1, c2, c3, c4 = st.columns(4)
 
     c1.markdown(f"""
