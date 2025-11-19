@@ -12,7 +12,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
 from mlxtend.frequent_patterns import apriori, association_rules
-import plotly.express as px  # ✅ added for interactive 3D chart
+import plotly.express as px  # ✅ added for interactive 3D model
 
 st.set_page_config(page_title="ReFill Hub Intelligence", layout="wide")
 df = pd.read_csv("ReFillHub_SyntheticSurvey.csv")
@@ -68,21 +68,21 @@ elif page == "🧩 About ReFill Hub":
         st.write("Making refill culture mainstream across the region.")
         st.markdown("### 🎯 Who We Serve")
         st.write("""
-- Young professionals  
-- Families  
-- Eco-conscious consumers  
-- Urban residents across UAE  
-""")
+- Young professionals
+- Families
+- Eco-conscious consumers
+- Urban residents across UAE
+        """)
     with c2:
         st.markdown("### 💳 Business Model")
         st.write("""
-- Refill margins  
+- Refill margins
         """)
         st.write("""
-- Brand partnerships  
-- Smart container sales  
-- Subscription plans  
-""")
+- Brand partnerships
+- Smart container sales
+- Subscription plans
+        """)
         st.markdown("### 🔮 Future Roadmap")
         st.write("UAE rollout → GCC expansion → ReFill OS")
 
@@ -190,7 +190,7 @@ elif page == "📊 Analysis":
             plt.colorbar(sc)
             st.pyplot(fig)
 
-            # ✅ NEW: Interactive 3D PCA scatter using Plotly
+            # ✅ NEW: Interactive 3D PCA scatter using Plotly (MOVING / ROTATABLE)
             p3 = PCA(n_components=3).fit_transform(df_num)
             p3_df = pd.DataFrame({
                 "PC1": p3[:, 0],
@@ -206,7 +206,7 @@ elif page == "📊 Analysis":
                 y="PC2",
                 z="PC3",
                 color="Cluster",
-                opacity=0.7,
+                opacity=0.75,
                 symbol="Cluster"
             )
             fig3.update_traces(marker=dict(size=4))
