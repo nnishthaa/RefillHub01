@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -30,15 +29,34 @@ with st.sidebar:
     st.write("📊 Amulya – Analytics Engineer")
     st.write("🧠 Anjan – Strategy & AI")
 
+
 # Dashboard Overview
 if page=="🏠 Dashboard Overview":
     st.markdown("<h1 style='background:linear-gradient(90deg,#6a11cb,#2575fc); padding:20px; border-radius:12px; color:white;'>♻️ ReFill Hub – Eco Intelligence Dashboard</h1>", unsafe_allow_html=True)
     st.write("Smart analytics engine for refill adoption.")
+
+    # ✅ NEW GREEN BOX (ONLY CHANGE MADE)
+    st.markdown("""
+        <div style="background-color:#d8f5d0; padding:20px; border-radius:12px; margin-top:20px;">
+            <h3 style="color:black;">💡 ReFill Hub: Business Overview</h3>
+            <p style="color:black; font-size:16px;">
+                The ReFill Hub is a sustainability-focused retail solution deploying automated smart refill kiosks across the UAE 
+                for daily essentials such as shampoos, detergents, and cooking oils.<br><br>
+                The core mission is to minimize single-use plastic waste by encouraging refillable consumption supported by digital 
+                payments and a frictionless user experience.<br><br>
+                The business targets young professionals and eco-conscious urban residents.<br>
+                Survey insights confirm middle-income groups and sustainability-aware respondents as early adopters.<br><br>
+                Future vision includes expanding into non-liquid categories and scaling across the GCC.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
     c1,c2,c3,c4=st.columns(4)
     c1.metric("Total Responses", df.shape[0])
     c2.metric("Features", df.shape[1])
     c3.metric("High Eco-Intent", "31.4%")
     c4.metric("Warm Adopters", "48.7%")
+
 
 # About Page
 elif page=="🧩 About ReFill Hub":
@@ -66,6 +84,7 @@ elif page=="🧩 About ReFill Hub":
 """)
         st.markdown("### 🔮 Future Roadmap")
         st.write("UAE rollout → GCC expansion → ReFill OS")
+
 
 # Analysis
 elif page=="📊 Analysis":
