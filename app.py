@@ -35,7 +35,7 @@ if page=="🏠 Dashboard Overview":
     st.markdown("<h1 style='background:linear-gradient(90deg,#6a11cb,#2575fc); padding:20px; border-radius:12px; color:white;'>♻️ ReFill Hub – Eco Intelligence Dashboard</h1>", unsafe_allow_html=True)
     st.write("Smart analytics engine for refill adoption.")
 
-    # ✅ GREEN BOX
+    # GREEN BOX
     st.markdown("""
         <div style="background-color:#d8f5d0; padding:20px; border-radius:12px; margin-top:20px;">
             <h3 style="color:black;">💡 ReFill Hub: Business Overview</h3>
@@ -145,8 +145,27 @@ elif page=="📊 Analysis":
         X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42)
         reg=LinearRegression().fit(X_train,y_train)
         preds=reg.predict(X_test)
+        
+        # Original metrics
         st.write("MAE:",mean_absolute_error(y_test,preds))
         st.write("RMSE:",np.sqrt(mean_squared_error(y_test,preds)))
+
+        # NEW: Explanation
+        st.write("""
+        **MAE** (Mean Absolute Error) tells us how far our predictions are from the actual willingness-to-pay values on average.  
+        **RMSE** (Root Mean Squared Error) gives extra penalty to larger mistakes and shows how consistent the model is.  
+        Together, these metrics indicate whether the regression model can reliably estimate how much customers are willing to pay.
+        """)
+
+        # NEW: Residual plot
+        residuals = y_test - preds
+        fig, ax = plt.subplots(figsize=(5,3))
+        sns.scatterplot(x=preds, y=residuals, alpha=0.6, ax=ax)
+        ax.axhline(0, color='red', linestyle='--')
+        ax.set_title("Residual Plot (Error vs Prediction)")
+        ax.set_xlabel("Predicted Values")
+        ax.set_ylabel("Residuals")
+        st.pyplot(fig)
 
     # Clustering
     with tabs[2]:
@@ -176,63 +195,61 @@ elif page=="📊 Analysis":
         rules=rules[["antecedents","consequents","support","confidence","lift"]].sort_values("lift",ascending=False).head(10)
         st.dataframe(rules)
 
-    # Insights (UPDATED ONLY THIS PART)
+    # Insights (Updated Graph Sizes ONLY)
     with tabs[4]:
         st.header("Insights")
 
-        # 1️⃣ Eco-aware users show higher adoption
+        # 1
         st.subheader("1. Eco-aware users show higher adoption")
         st.write(
             "Users who regularly choose eco-friendly products demonstrate a much higher likelihood of adopting ReFill Hub. "
             "Their sustainability mindset directly influences refill behavior, making them an ideal early-adopter segment."
         )
-        fig, ax = plt.subplots(figsize=(5,3))
+        fig, ax = plt.subplots(figsize=(4,2.5))
         sns.barplot(x=df["Uses_Eco_Products"], y=df["Likely_to_Use_ReFillHub"], estimator=np.mean, ax=ax)
-        ax.set_xlabel("Uses Eco Products (0=No, 1=Yes)")
         ax.set_title("Eco-Friendly Users vs Adoption Likelihood")
         st.pyplot(fig)
 
-        # 2️⃣ Mid-income groups adopt refills the most
+        # 2
         st.subheader("2. Mid-income consumers show the strongest adoption")
         st.write(
             "Middle-income consumers balance affordability with awareness, and they emerge as the most responsive segment. "
             "They show higher refill likelihood compared to lower or higher-income groups."
         )
-        fig, ax = plt.subplots(figsize=(5,3))
+        fig, ax = plt.subplots(figsize=(4,2.5))
         sns.boxplot(x=df["Income"], y=df["Likely_to_Use_ReFillHub"], ax=ax)
         ax.set_title("Income Group vs ReFill Adoption Likelihood")
         st.pyplot(fig)
 
-        # 3️⃣ Plastic ban awareness increases interest
+        # 3
         st.subheader("3. Plastic ban awareness strongly boosts interest")
         st.write(
             "Respondents aware of the UAE’s plastic ban are significantly more inclined to try ReFill Hub. "
             "Government regulations act as a powerful motivator for eco-friendly alternatives."
         )
-        fig, ax = plt.subplots(figsize=(5,3))
+        fig, ax = plt.subplots(figsize=(4,2.5))
         sns.barplot(x=df["Aware_Plastic_Ban"], y=df["Likely_to_Use_ReFillHub"], estimator=np.mean, ax=ax)
-        ax.set_xlabel("Awareness of Plastic Ban (0=No, 1=Yes)")
         ax.set_title("Plastic Ban Awareness vs ReFill Adoption")
         st.pyplot(fig)
 
-        # 4️⃣ Sustainability score drives willingness-to-pay
+        # 4
         st.subheader("4. Higher sustainability scores → Higher willingness-to-pay")
         st.write(
             "Users with high reduce-waste scores are willing to pay more for sustainable refill solutions. "
             "Environmental values strongly influence willingness to pay for eco-friendly products."
         )
-        fig, ax = plt.subplots(figsize=(5,3))
-        sns.scatterplot(x=df["Reduce_Waste_Score"], y=df["Willingness_to_Pay_AED"], ax=ax, alpha=0.6)
+        fig, ax = plt.subplots(figsize=(4,2.5))
+        sns.scatterplot(x=df["Reduce_Waste_Score"], y=df["Willingness_to_Pay_AED"], alpha=0.6, ax=ax)
         ax.set_title("Sustainability Score vs Willingness to Pay")
         st.pyplot(fig)
 
-        # 5️⃣ Location preferences guide deployment
+        # 5
         st.subheader("5. Location preferences guide ideal kiosk placement")
         st.write(
             "Survey data highlights high demand for refill kiosks in malls, residential areas, and metro stations. "
             "Understanding these preferred zones helps optimize deployment and ensures maximum user convenience."
         )
-        fig, ax = plt.subplots(figsize=(5,3))
+        fig, ax = plt.subplots(figsize=(4,2.5))
         loc_counts = df["Refill_Location"].value_counts()
         sns.barplot(x=loc_counts.index, y=loc_counts.values, ax=ax)
         ax.set_title("Preferred Locations for ReFill Hub")
