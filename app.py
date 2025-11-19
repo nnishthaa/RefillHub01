@@ -12,7 +12,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
 from mlxtend.frequent_patterns import apriori, association_rules
-from mpl_toolkits.mplot3d import Axes3D   # ⭐ FOR 3D MODEL ⭐
+import plotly.express as px  # ⭐ FOR FULLY ROTATABLE 3D MODEL ⭐
 
 st.set_page_config(page_title="ReFill Hub Intelligence", layout="wide")
 df=pd.read_csv("ReFillHub_SyntheticSurvey.csv")
@@ -163,7 +163,7 @@ elif page=="📊 Analysis":
         st.pyplot(fig)
 
 
-    # ⭐⭐⭐ UPDATED: CLUSTERING WITH 3D MODEL ⭐⭐⭐
+    # ⭐⭐⭐ UPDATED: TRUE ROTATABLE 3D CLUSTERING MODEL ⭐⭐⭐
     with tabs[2]:
         st.header("Customer Clustering")
         k=st.slider("Number of clusters",2,6,3)
@@ -175,25 +175,19 @@ elif page=="📊 Analysis":
             df['Cluster']=km.labels_
             st.dataframe(df['Cluster'].value_counts())
 
-            # ----- 3D PCA -----
+            # ----- Plotly 3D PCA -----
             pca_3=PCA(n_components=3)
             p3=pca_3.fit_transform(df_num)
 
-            fig = plt.figure(figsize=(8,6))
-            ax = fig.add_subplot(111, projection='3d')
-
-            sc = ax.scatter(
-                p3[:,0], p3[:,1], p3[:,2],
-                c=df["Cluster"], cmap='viridis', s=40
+            fig3d = px.scatter_3d(
+                x=p3[:,0], y=p3[:,1], z=p3[:,2],
+                color=df["Cluster"].astype(str),
+                title="3D Interactive Customer Clusters",
+                opacity=0.8
             )
 
-            ax.set_title("3D Interactive Customer Clusters (Rotatable)")
-            ax.set_xlabel("PC1")
-            ax.set_ylabel("PC2")
-            ax.set_zlabel("PC3")
-
-            fig.colorbar(sc)
-            st.pyplot(fig)
+            fig3d.update_traces(marker=dict(size=5))
+            st.plotly_chart(fig3d, use_container_width=True)
 
 
     # Association Rules
