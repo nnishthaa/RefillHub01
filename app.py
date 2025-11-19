@@ -96,6 +96,22 @@ elif page=="📊 Analysis":
     # Classification
     with tabs[0]:
         st.header("Classification Models")
+
+        # ⭐⭐⭐ ADDED PERSONA SECTION ⭐⭐⭐
+        st.subheader("💁‍♀️ Customer Persona (Based on Prediction Patterns)")
+        st.markdown("""
+        **Persona: Eco-Driven Urban Millennial**
+
+        - Age Group: 22–35  
+        - Lives in: Dubai / Abu Dhabi  
+        - Income: Mid-level (8,000–18,000 AED)  
+        - Lifestyle: Health-conscious, sustainability-focused  
+        - Behaviour: Prefers convenient, digital and eco-friendly solutions  
+        - Trigger Point: Strong awareness of plastic ban & sustainability impact  
+        - Motivation: Reduce plastic waste + save money through refills  
+        - Likely to Use ReFill Hub: **High**, based on model predictions  
+        """)
+
         df_c=df.copy()
         le=LabelEncoder()
         for col in df_c.select_dtypes(include=['object']).columns:
