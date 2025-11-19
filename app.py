@@ -150,14 +150,14 @@ elif page=="📊 Analysis":
         st.write("MAE:",mean_absolute_error(y_test,preds))
         st.write("RMSE:",np.sqrt(mean_squared_error(y_test,preds)))
 
-        # NEW: Explanation
+        # Explanation
         st.write("""
         **MAE** (Mean Absolute Error) tells us how far our predictions are from the actual willingness-to-pay values on average.  
         **RMSE** (Root Mean Squared Error) gives extra penalty to larger mistakes and shows how consistent the model is.  
         Together, these metrics indicate whether the regression model can reliably estimate how much customers are willing to pay.
         """)
 
-        # NEW: Residual plot
+        # Residual plot
         residuals = y_test - preds
         fig, ax = plt.subplots(figsize=(5,3))
         sns.scatterplot(x=preds, y=residuals, alpha=0.6, ax=ax)
@@ -195,63 +195,100 @@ elif page=="📊 Analysis":
         rules=rules[["antecedents","consequents","support","confidence","lift"]].sort_values("lift",ascending=False).head(10)
         st.dataframe(rules)
 
-    # Insights (Updated Graph Sizes ONLY)
+    # ⭐⭐⭐ UPDATED INSIGHTS SECTION ONLY ⭐⭐⭐
     with tabs[4]:
         st.header("Insights")
 
-        # 1
+        # 1 — Horizontal colorful bar chart
         st.subheader("1. Eco-aware users show higher adoption")
         st.write(
             "Users who regularly choose eco-friendly products demonstrate a much higher likelihood of adopting ReFill Hub. "
             "Their sustainability mindset directly influences refill behavior, making them an ideal early-adopter segment."
         )
-        fig, ax = plt.subplots(figsize=(4,2.5))
-        sns.barplot(x=df["Uses_Eco_Products"], y=df["Likely_to_Use_ReFillHub"], estimator=np.mean, ax=ax)
-        ax.set_title("Eco-Friendly Users vs Adoption Likelihood")
+        fig, ax = plt.subplots(figsize=(3.8,2.3))
+        sns.barplot(
+            x=df["Likely_to_Use_ReFillHub"], 
+            y=df["Uses_Eco_Products"],
+            palette="viridis",
+            estimator=np.mean,
+            ax=ax
+        )
+        ax.set_title("Eco Users vs Adoption Likelihood")
+        ax.set_xlabel("Avg Likelihood")
+        ax.set_ylabel("Eco Product Usage (0=No, 1=Yes)")
         st.pyplot(fig)
 
-        # 2
+        # 2 — Box plot
         st.subheader("2. Mid-income consumers show the strongest adoption")
         st.write(
             "Middle-income consumers balance affordability with awareness, and they emerge as the most responsive segment. "
             "They show higher refill likelihood compared to lower or higher-income groups."
         )
-        fig, ax = plt.subplots(figsize=(4,2.5))
-        sns.boxplot(x=df["Income"], y=df["Likely_to_Use_ReFillHub"], ax=ax)
-        ax.set_title("Income Group vs ReFill Adoption Likelihood")
+        fig, ax = plt.subplots(figsize=(3.8,2.3))
+        sns.boxplot(x=df["Income"], y=df["Likely_to_Use_ReFillHub"], palette="Set2", ax=ax)
+        ax.set_title("Income Group vs Likelihood")
         st.pyplot(fig)
 
-        # 3
+        # 3 — Donut chart
         st.subheader("3. Plastic ban awareness strongly boosts interest")
         st.write(
             "Respondents aware of the UAE’s plastic ban are significantly more inclined to try ReFill Hub. "
             "Government regulations act as a powerful motivator for eco-friendly alternatives."
         )
-        fig, ax = plt.subplots(figsize=(4,2.5))
-        sns.barplot(x=df["Aware_Plastic_Ban"], y=df["Likely_to_Use_ReFillHub"], estimator=np.mean, ax=ax)
-        ax.set_title("Plastic Ban Awareness vs ReFill Adoption")
+        awareness_counts = df["Aware_Plastic_Ban"].value_counts()
+        labels = ["Not Aware", "Aware"]
+        sizes = [awareness_counts.get(0, 0), awareness_counts.get(1, 0)]
+        colors = ["#ff9999","#66b3ff"]
+
+        fig, ax = plt.subplots(figsize=(3.2,3.2))
+        ax.pie(
+            sizes,
+            labels=labels,
+            colors=colors,
+            autopct="%1.1f%%",
+            startangle=90,
+            wedgeprops={'linewidth':1, 'edgecolor':'white'}
+        )
+        centre_circle = plt.Circle((0,0),0.60,fc='white')
+        fig.gca().add_artist(centre_circle)
+        ax.set_title("Awareness of Plastic Ban")
         st.pyplot(fig)
 
-        # 4
+        # 4 — Scatter + trendline
         st.subheader("4. Higher sustainability scores → Higher willingness-to-pay")
         st.write(
             "Users with high reduce-waste scores are willing to pay more for sustainable refill solutions. "
             "Environmental values strongly influence willingness to pay for eco-friendly products."
         )
-        fig, ax = plt.subplots(figsize=(4,2.5))
-        sns.scatterplot(x=df["Reduce_Waste_Score"], y=df["Willingness_to_Pay_AED"], alpha=0.6, ax=ax)
-        ax.set_title("Sustainability Score vs Willingness to Pay")
+        fig, ax = plt.subplots(figsize=(3.8,2.3))
+        sns.regplot(
+            x=df["Reduce_Waste_Score"], 
+            y=df["Willingness_to_Pay_AED"],
+            scatter_kws={"alpha":0.5},
+            line_kws={"color":"red"},
+            ax=ax
+        )
+        ax.set_title("Sustainability Score vs WTP")
         st.pyplot(fig)
 
-        # 5
+        # 5 — Line chart
         st.subheader("5. Location preferences guide ideal kiosk placement")
         st.write(
             "Survey data highlights high demand for refill kiosks in malls, residential areas, and metro stations. "
-            "Understanding these preferred zones helps optimize deployment and ensures maximum user convenience."
+            "Understanding these preferred zones helps optimize deployment and ensure maximum user convenience."
         )
-        fig, ax = plt.subplots(figsize=(4,2.5))
-        loc_counts = df["Refill_Location"].value_counts()
-        sns.barplot(x=loc_counts.index, y=loc_counts.values, ax=ax)
-        ax.set_title("Preferred Locations for ReFill Hub")
+        location_counts = df["Refill_Location"].value_counts()
+
+        fig, ax = plt.subplots(figsize=(4,2.3))
+        sns.lineplot(
+            x=location_counts.index, 
+            y=location_counts.values,
+            marker="o",
+            linewidth=2,
+            color="#2ca02c",
+            ax=ax
+        )
+        ax.set_title("Preferred Refill Locations")
+        ax.set_ylabel("Count")
         plt.xticks(rotation=45)
         st.pyplot(fig)
