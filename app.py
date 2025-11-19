@@ -35,7 +35,7 @@ if page=="🏠 Dashboard Overview":
     st.markdown("<h1 style='background:linear-gradient(90deg,#6a11cb,#2575fc); padding:20px; border-radius:12px; color:white;'>♻️ ReFill Hub – Eco Intelligence Dashboard</h1>", unsafe_allow_html=True)
     st.write("Smart analytics engine for refill adoption.")
 
-    # ✅ NEW GREEN BOX (ONLY CHANGE MADE)
+    # ✅ GREEN BOX
     st.markdown("""
         <div style="background-color:#d8f5d0; padding:20px; border-radius:12px; margin-top:20px;">
             <h3 style="color:black;">💡 ReFill Hub: Business Overview</h3>
@@ -78,6 +78,8 @@ elif page=="🧩 About ReFill Hub":
         st.markdown("### 💳 Business Model")
         st.write("""
 - Refill margins  
+        """)
+        st.write("""
 - Brand partnerships  
 - Smart container sales  
 - Subscription plans  
@@ -174,7 +176,65 @@ elif page=="📊 Analysis":
         rules=rules[["antecedents","consequents","support","confidence","lift"]].sort_values("lift",ascending=False).head(10)
         st.dataframe(rules)
 
-    # Insights
+    # Insights (UPDATED ONLY THIS PART)
     with tabs[4]:
         st.header("Insights")
-        st.write("✔ Eco-aware users show higher adoption\n✔ Mid-income strongest adopters\n✔ Plastic ban awareness increases interest\n✔ High sustainability scores → More WTP\n✔ Location preference guides kiosk deployment")
+
+        # 1️⃣ Eco-aware users show higher adoption
+        st.subheader("1. Eco-aware users show higher adoption")
+        st.write(
+            "Users who regularly choose eco-friendly products demonstrate a much higher likelihood of adopting ReFill Hub. "
+            "Their sustainability mindset directly influences refill behavior, making them an ideal early-adopter segment."
+        )
+        fig, ax = plt.subplots(figsize=(5,3))
+        sns.barplot(x=df["Uses_Eco_Products"], y=df["Likely_to_Use_ReFillHub"], estimator=np.mean, ax=ax)
+        ax.set_xlabel("Uses Eco Products (0=No, 1=Yes)")
+        ax.set_title("Eco-Friendly Users vs Adoption Likelihood")
+        st.pyplot(fig)
+
+        # 2️⃣ Mid-income groups adopt refills the most
+        st.subheader("2. Mid-income consumers show the strongest adoption")
+        st.write(
+            "Middle-income consumers balance affordability with awareness, and they emerge as the most responsive segment. "
+            "They show higher refill likelihood compared to lower or higher-income groups."
+        )
+        fig, ax = plt.subplots(figsize=(5,3))
+        sns.boxplot(x=df["Income"], y=df["Likely_to_Use_ReFillHub"], ax=ax)
+        ax.set_title("Income Group vs ReFill Adoption Likelihood")
+        st.pyplot(fig)
+
+        # 3️⃣ Plastic ban awareness increases interest
+        st.subheader("3. Plastic ban awareness strongly boosts interest")
+        st.write(
+            "Respondents aware of the UAE’s plastic ban are significantly more inclined to try ReFill Hub. "
+            "Government regulations act as a powerful motivator for eco-friendly alternatives."
+        )
+        fig, ax = plt.subplots(figsize=(5,3))
+        sns.barplot(x=df["Aware_Plastic_Ban"], y=df["Likely_to_Use_ReFillHub"], estimator=np.mean, ax=ax)
+        ax.set_xlabel("Awareness of Plastic Ban (0=No, 1=Yes)")
+        ax.set_title("Plastic Ban Awareness vs ReFill Adoption")
+        st.pyplot(fig)
+
+        # 4️⃣ Sustainability score drives willingness-to-pay
+        st.subheader("4. Higher sustainability scores → Higher willingness-to-pay")
+        st.write(
+            "Users with high reduce-waste scores are willing to pay more for sustainable refill solutions. "
+            "Environmental values strongly influence willingness to pay for eco-friendly products."
+        )
+        fig, ax = plt.subplots(figsize=(5,3))
+        sns.scatterplot(x=df["Reduce_Waste_Score"], y=df["Willingness_to_Pay_AED"], ax=ax, alpha=0.6)
+        ax.set_title("Sustainability Score vs Willingness to Pay")
+        st.pyplot(fig)
+
+        # 5️⃣ Location preferences guide deployment
+        st.subheader("5. Location preferences guide ideal kiosk placement")
+        st.write(
+            "Survey data highlights high demand for refill kiosks in malls, residential areas, and metro stations. "
+            "Understanding these preferred zones helps optimize deployment and ensures maximum user convenience."
+        )
+        fig, ax = plt.subplots(figsize=(5,3))
+        loc_counts = df["Refill_Location"].value_counts()
+        sns.barplot(x=loc_counts.index, y=loc_counts.values, ax=ax)
+        ax.set_title("Preferred Locations for ReFill Hub")
+        plt.xticks(rotation=45)
+        st.pyplot(fig)
